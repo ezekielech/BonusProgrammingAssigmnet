@@ -27,10 +27,54 @@ size_t Size(void* ptr)
 	return ((size_t*)ptr)[-1];
 }
 
-// implement merge sort
-// extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
+	void mergeSort(int pData[], int l, int r)
 {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(pData, l, m);
+        mergeSort(pData, m + 1, r);
+        int i, j, k;
+        int n1 = m - l + 1;
+        int n2 = r - m;
+        int *L = (int *)Alloc(n1 * sizeof(int));
+        int *R = (int *)Alloc(n2 * sizeof(int));
+
+        for (i = 0; i < n1; i++)
+            L[i] = pData[l + i];
+        for (j = 0; j < n2; j++)
+            R[j] = pData[m + 1 + j];
+
+        i = 0; 
+        j = 0; 
+        k = l; 
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                pData[k] = L[i];
+                i++;
+            }
+            else {
+                pData[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            pData[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            pData[k] = R[j];
+            j++;
+            k++;
+        }
+
+        DeAlloc(L);
+        DeAlloc(R);
+    }
+
+
 }
 
 // parses input file to an integer array
